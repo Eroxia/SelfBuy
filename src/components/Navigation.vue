@@ -1,4 +1,5 @@
 <template>
+  <div class="hold-transition skin-blue sidebar-mini">
      <div class="wrapper" >
        <header class="main-header" style="position: fixed; width: 100%" >
          <!-- Logo -->
@@ -137,6 +138,7 @@
        </aside>
        <router-view></router-view>
      </div>
+  </div>
 </template>
 <script>
   export default {
@@ -144,3 +146,7 @@
   }
 </script>
 
+<style scoped>
+  @import '/static/dist/css/AdminLTE.min.css';
+  @import '/static/dist/css/skins/_all-skins.min.css';
+</style>

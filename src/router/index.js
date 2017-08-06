@@ -14,9 +14,10 @@ import Home from '@/components/Home'
 import Navigation from '@/components/Navigation'
 import Order from '@/components/Order'
 import Staff from '@/components/Staff'
+
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   routes: [
     {
       path: '/',
@@ -31,6 +32,7 @@ export default new Router({
     {
       path: '/nav',
       component: Navigation,
+      meta: { requiresAuth: true },
       children: [
         {
           path: '',
@@ -84,3 +86,22 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (localStorage.getItem('token')) {
+      next()
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+
+  } else {
+    next() // make sure to always call next()!
+  }
+})
+
+export default router

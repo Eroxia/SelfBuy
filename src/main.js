@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 
 Vue.use(router)
 Vue.use(VueResource)
+
 Vue.http.options.emulateJSON = false
 /* eslint-disable no-new */
 new Vue({

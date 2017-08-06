@@ -286,7 +286,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="moda" @click="close">Close</button>
             <button type="button" class="btn btn-primary"  data-dismiss="modal" @click="saveGood">Save</button>
           </div>
               </div>
@@ -320,21 +320,21 @@
                     <div class="form-group">
                       <label  class="col-sm-2 control-label">条形码:</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" v-model="item.code">
+                        <input type="text" class="form-control" v-model="item3.code">
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-sm-2 control-label">价格</label>
 
                       <div class="col-sm-10">
-                       <input v-model="item.price" type="text" class="form-control" placeholder="¥">
+                       <input v-model="item3.price" type="text" class="form-control" placeholder="¥">
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label  class="col-sm-2 control-label">库存:</label>
                       <div class="col-sm-10">
-                        <input  class="form-control" v-model="item.totalStock" >
+                        <input  class="form-control" v-model="item3.totalStock" >
                       </div>
                     </div>
                     <div class="form-group">
@@ -342,11 +342,11 @@
                       <div class="col-sm-10">
                         <div class="radio">
                           <label>
-                            <input v-model="item.saled" type="radio" name="optionsRadios" value="1" checked="">
+                            <input v-model="item3.saled" type="radio" name="optionsRadios" value="1" checked="">
                             上架
                           </label>
                           <label>
-                            <input v-model="item.saled" type="radio" name="optionsRadios" value="0">
+                            <input v-model="item3.saled" type="radio" name="optionsRadios" value="0">
                             下架
                           </label>
                         </div>
@@ -358,7 +358,7 @@
 
                       <div class="col-sm-10">
                         <div class="row">
-                          <div class="col-md-4" v-for="img in item.images" >
+                          <div class="col-md-4" v-for="img in item3.images" >
                               <img v-bind:src=img style="width: 150px">
                           </div>
                           <div class="col-md-3">
@@ -374,7 +374,7 @@
                   </form>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal" @click="close">关闭</button>
                   <button type="button" class="btn btn-primary"  data-dismiss="modal" @click="submit">发布</button>
                 </div>
               </div>
@@ -408,6 +408,7 @@
         deleteGoodId: '',
         item: [],
         item2: [],
+        item3: [],
         index: '',
         index2: '',
         Brands: [],
@@ -473,29 +474,45 @@
       },
       //添加sku
       submit() {
-        this.item.pvalueIds = []
+        this.item3.pvalueIds = []
         this.checkedValues.forEach(value => {
-          this.item.pvalueIds.push(value.id)
+          this.item3.pvalueIds.push(value.id)
         })
-        this.item.goodsId = this.item2.id
-        this.$http.post(`${this.apiUrl}/insert`, {goodsId: this.item.goodsId, code: this.item.code, images: this.item.images, price: this.item.price, saled: this.item.saled, pvalueIds: this.item.pvalueIds, totalStock: this.item.totalStock })
+        var files = document.querySelector('#upload2').files
+        var formData = new FormData()
+        Vue.set(this.item3, 'images', [])
+        this.item3.images = []
+        formData.append("file",files[0])
+        this.$http.post('http://file.descloud.io', formData)
+          .then(response => {
+            this.item3.images.splice(0, 1, 'http://'+response.body)
+          })
+        this.$http.post(`${this.apiUrl}/insert`, {code: this.item3.code, goodsId: this.item2.id, images: this.item3.images, price: this.item3.price, pvalueIds: this.item3.pvalueIds, saled: this.item3.saled, totalStock: this.item3.totalStock})
           .then(response => {
             this.Goods.forEach(good => {
-              if(good.id == this.item.goodsId) {
+              if(good.id == this.item2.id) {
                 var obj = {
-                  goodsId: this.item.goodsId,
-                  code: this.item.code,
-                  images: this.item.images,
-                  price: this.item.price,
-                  saled: this.item.saled,
-                  pvalueIds: this.item.pvalueIds,
-                  totalStock: this.item.totalStock
+                  goodsId: this.item3.goodsId,
+                  code: this.item3.code,
+                  images: this.item3.images,
+                  price: this.item3.price,
+                  saled: this.item3.saled,
+                  pvalueIds: this.item3.pvalueIds,
+                  totalStock: this.item3.totalStock
                 }
                 good.skus.push(obj)
+                this.item3 = []
+                this.selProperties = []
               }
             })
           })
+       console.log(this.item3)
 
+      },
+      close() {
+        if(this.item3.images) {
+          this.item3.images = []
+        }
       },
       //删除sku
       deleteSku() {
@@ -564,12 +581,12 @@
       previewFilesSku() {
         var files = document.querySelector('#upload2').files
         var formData = new FormData()
-        this.item.images = []
+        Vue.set(this.item3, 'images', [])
+        this.item3.images = []
         formData.append("file",files[0])
         this.$http.post('http://file.descloud.io', formData)
           .then(response => {
-            Vue.set(this.item, 'images', [])
-            this.item.images.splice(0, 1, 'http://'+response.body)
+            this.item3.images.splice(0, 1, 'http://'+response.body)
           })
       },
       uploadSku() {
