@@ -176,8 +176,14 @@
       add() {
         this.$http.post(this.apiUrl + '/brand', { chName: this.item.chName })
           .then(response => {
-            var obj = { chName: this.item.chName }
+            console.log(response.body.data.id)
+            var obj = {
+              chName: this.item.chName,
+              id: response.body.data.id,
+              createdAt: response.body.data.createdAt
+            }
             this.Brands.push(obj)
+            this.item = []
           })
       }
     }

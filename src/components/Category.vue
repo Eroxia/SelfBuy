@@ -105,7 +105,6 @@
           this.categories = response.body.data
           this.categories.forEach(category => {
             if(category.pid == 0) {
-             Vue.set(category, 'values', [])
              this.pid_0.push(category)
             }
           })
@@ -135,10 +134,12 @@
           .then(response => {
             var obj = {
               name: this.item.name,
-              pid: 0,
-              value: []
+              pid: response.body.data.pid,
+              values: [],
+              id: response.body.data.id
             }
             this.pid_0.push(obj)
+            this.item = []
           })
       },
       //在pid:0 的分类下添加value
@@ -154,6 +155,7 @@
                pid.values.push(obj)
              }
            })
+            this.item2 = []
           })
       },
       //删除pid:0分类下的value

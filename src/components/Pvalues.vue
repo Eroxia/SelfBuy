@@ -91,6 +91,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   export default {
     data() {
       name: 'Pvalues'
@@ -117,8 +118,13 @@
         if(this.item.name) {
           this.$http.post(`${this.apiUrl}/pname`, {name: this.item.name} )
             .then(response => {
-              var obj = { name: this.item.name }
+              var obj = {
+                name: this.item.name,
+                pnameId: response.body.data.id,
+                pvalues: []
+              }
               this.goodsAttrs.push(obj)
+              this.item = []
             })
         }
       },
@@ -144,10 +150,17 @@
           .then(response => {
             this.goodsAttrs.forEach(attr => {
               if(attr.pnameId == Attr.pnameId) {
-                var obj = { value: this.item2.value }
+                var obj = {
+                  value: this.item2.value,
+                  pnameId: Attr.pnameId,
+                  id: response.body.data.id,
+                  createdAt: response.body.data.createdAt,
+                  value: response.body.data.value
+                }
                 attr.pvalues.push(obj)
               }
             })
+            this.item2 = []
           })
       },
       //删除规格里边的pvalue

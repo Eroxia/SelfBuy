@@ -18,22 +18,22 @@
                   <label class="col-sm-2 control-label">类别</label>
                   <div class="col-sm-10">
                     <div class="row">
-
                       <div class="col-md-6">
-                        <select v-model="level1" class="form-control">
-                          <option v-for="cate in cates" v-bind:value="cate" v-if="cate.pid == 0">
+                        <select v-model="level1" class="form-control" v-on:change="selectcate(level1)">
+                          <option v-for="cate in pid_0" v-bind:value="cate">
                             {{ cate.name }}
                           </option>
                         </select>
                       </div>
 
                       <div class="col-md-6">
-                        <select v-model="selCategory" class="form-control">
-                          <option v-for="cate in cates" v-bind:value="cate" v-if="cate.pid == level1.id">
+                        <select v-model="product.categoryId" class="form-control">
+                          <option v-for="cate in cate_2" v-bind:value="cate.id" >
                             {{ cate.name }}
                           </option>
                         </select>
                       </div>
+
 
                     </div>
                   </div>
@@ -47,8 +47,8 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">商标</label>
                   <div class="col-sm-10">
-                    <select  class="form-control" v-model="selBrand">
-                      <option v-for="brand in brands" v-bind:value="brand">
+                    <select  class="form-control" v-model="product.brandId">
+                      <option v-for="brand in brands" v-bind:value="brand.id">
                         {{ brand.chName }}
                       </option>
                     </select>
@@ -58,6 +58,12 @@
                   <label class="col-sm-2 control-label">单位</label>
                   <div class="col-sm-10">
                     <input v-model="product.unit" type="text" class="form-control" placeholder="件">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">标签</label>
+                  <div class="col-sm-10">
+                    <input v-model="product.tags" type="text" class="form-control" >
                   </div>
                 </div>
                 <div class="form-group">
@@ -197,17 +203,34 @@
         checkedValues: [],
         skus: [],
         categories: [],
-        level1: {children: []},
+        level1: [],
         selCategory: '',
         currentSku: null,
         cates: [],
-        brands: []
+        brands: [],
+        pid_0: [],
+        cate_2: []
       }
     },
     created: function() {
       //获取所有商品类别
-      this.$http.get(`${this.apiUrl}/category?&pageSize=100&page=0`).then(response => {
+      this.$http.get(`${this.apiUrl}/category?&pageSize=100&page=0`).
+        then(response => {
         this.cates = response.body.data
+        this.cates.forEach(category => {
+          category.values = []
+          if(category.pid == 0) {
+            this.pid_0.push(category)
+          }
+        })
+
+        this.cates.forEach(category => {
+          this.pid_0.forEach(pid => {
+            if(category.pid == pid.id) {
+              pid.values.push(category)
+            }
+          })
+        })
       })
       //获取所有商品规格
       this.$http.get(`${this.apiUrl}/pname?included=pvalue`).then(response => {
@@ -221,6 +244,16 @@
       })
     },
     methods: {
+      selectcate(level1) {
+        if(level1) {
+          this.cate_2 = []
+          this.cates.forEach(category => {
+            if(level1.id == category.pid) {
+              this.cate_2.push(category)
+            }
+          })
+        }
+      },
       previewFiles () {
         var sku = this.currentSku
         var files = document.querySelector('input[type=file]').files
@@ -285,9 +318,6 @@
         }
       },
       submit() {
-        //将要提交的product
-        this.product.categoryId = this.selCategory.id
-        this.product.brandId = this.selBrand.id
         this.product.skus.forEach(sku => {
           sku.pvalueIds = []
           sku.properties.forEach(prop => {
@@ -295,12 +325,11 @@
           })
           delete sku.properties
         })
-        //添加一个商品 并跳转到所有商品页面
         this.$http.post(`${this.apiUrl}/goods`, this.product)
           .then(response => {
             switch(response.status) {
               case 200:
-                this.$router.push('/goods')
+                this.$router.push('/nav/goods')
                 break
             }
           })

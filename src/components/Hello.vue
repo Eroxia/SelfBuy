@@ -20,14 +20,13 @@
           <div class="small-box bg-aqua">
             <div class="inner">
               <h3>150</h3>
-
               <p>今日订单</p>
             </div>
 
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <router-link to="/order" class="small-box-footer">详情<i class="fa fa-arrow-circle-right"></i></router-link>
+            <router-link to="/nav/order" class="small-box-footer">详情<i class="fa fa-arrow-circle-right"></i></router-link>
           </div>
 
         </div>
