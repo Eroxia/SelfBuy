@@ -11,7 +11,7 @@
 
           <span class="g-display-block--xs g-display-inline-block--sm g-padding-x-5--xs g-margin-b-10--xs g-margin-b-0--sm">
                         <!--<button type="button" class="text-uppercase s-btn s-btn-icon--md s-btn--white-brd g-radius--50 g-padding-x-80--xs" data-toggle="modal" data-target="#myModal">Talk to expert</button>-->
-                         <a href="" class="text-uppercase s-btn s-btn--white-brd s-btn--md  g-radius--50 g-padding-x-80--xs talkto_expert trackData" data-name="talktoExpert" data-toggle="modal" data-target="#myModal">Talk to expert</a>
+                         <a href="/#/login" class="text-uppercase s-btn s-btn--white-brd s-btn--md  g-radius--50 g-padding-x-80--xs talkto_expert trackData" data-name="talktoExpert" data-toggle="modal" >Talk to expert</a>
                     </span>
         </div>
         <div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper" style="padding-top: 4%">
+  <div class="content-wrapper" style="padding-top: 3%">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>分类管理</h1>

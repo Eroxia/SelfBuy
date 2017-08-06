@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper" style="padding-top: 4%"  >
+  <div class="content-wrapper" style="padding-top: 3%"  >
     <!-- Content Header (Page header) -->
     <section class="content-header" >
       <h1>
@@ -226,7 +226,7 @@
 
                     <div class="col-md-6">
                       <select v-model="level1" class="form-control" v-on:change="selectcate(level1)">
-                        <option v-for="cate in Categories"  v-bind:value="cate" v-if="cate.pid == 0" >
+                        <option v-for="cate in Categories"  v-bind:value="cate" v-if="cate.pid == 0">
                           {{ cate.name }}
                         </option>
                       </select>
@@ -272,7 +272,13 @@
                 <label class="col-sm-2 control-label">描述:</label>
 
                 <div class="col-sm-10">
-                  <textarea  name="desc" class="form-control" v-model="item2.description"></textarea>
+                  <textarea name="desc" class="form-control" v-model="item2.description"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">标签:</label>
+                <div class="col-sm-10">
+                  <input class="form-control" v-model="item2.tags">
                 </div>
               </div>
 
@@ -443,21 +449,27 @@
         this.item2 = good
         this.deleteGoodId = good.id
         this.index2 = index
+        this.cate_2 = []
+        var cache = ''
         this.Categories.forEach(category => {
+          //循环找出good的pid
           if(good.categoryId == category.id) {
             var cate = category.pid
+            //根据good的pid找出上一层的id
             this.Categories.forEach(category => {
               if(category.id == cate){
                 this.level1 = category
+                cache = category.id
               }
+
             })
           }
         })
-        var obj = {
-          name: good.categoryName,
-            id: good.categoryId
-        }
-        this.cate_2.push(obj)
+        this.Categories.forEach(category => {
+          if(category.pid == cache) {
+            this.cate_2.push(category)
+          }
+        })
       },
       //添加sku
       submit() {
@@ -531,7 +543,8 @@
           categoryId: this.item2.categoryId,
           order: this.item2.order,
           description: this.item2.description,
-          brandId: this.selBrand.id
+          brandId: this.selBrand.id,
+          tags: this.item2.tags
         }
         this.$http.put(this.apiUrl + '/goods/' + this.item2.id , obj)
           .then(response => {
@@ -566,12 +579,14 @@
         document.querySelector('#upload2').click()
       },
       selectcate(level1) {
-        this.cate_2 = []
-        this.Categories.forEach(category => {
-          if(level1.id == category.pid){
-            this.cate_2.push(category)
-          }
-        })
+        if(level1) {
+          this.cate_2 = []
+          this.Categories.forEach(category => {
+            if(level1.id == category.pid) {
+              this.cate_2.push(category)
+            }
+          })
+        }
       }
     },
     components: { Multiselect }
