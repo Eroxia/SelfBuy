@@ -21,7 +21,6 @@
   }
 </script>
 <style scoped>
-  @import '/static/global.css';
-  @import '/static/style.css';
+  @import '/static/main.css';
+  @import '/static/all.css';
 </style>
-

@@ -1,55 +1,95 @@
 <template>
-  <footer class="g-bg-color--dark">
-    <!-- Links -->
-    <div class="g-hor-divider__dashed--white-opacity-lightest">
-      <div class="container g-padding-y-80--xs">
+  <div>
+    <section class="footer">
+      <div class="container">
         <div class="row">
-          <div class="col-sm-3 g-margin-b-20--xs g-margin-b-0--md">
-            <ul class="list-unstyled g-ul-li-tb-5--xs g-margin-b-0--xs">
-              <li><a class="g-font-size-15--xs g-color--white-opacity trackData" data-name="homePage">Home</a></li>
-              <li><a class="g-font-size-15--xs g-color--white-opacity trackData" data-name="homeCareers">Careers</a></li>
-              <li><a class="g-font-size-15--xs g-color--white-opacity trackData" data-name="homeContact">Contact</a></li>
-            </ul>
+          <div class="col-md-12">
+            <img class="img-responsive center-block" src="https://www.wibmachines.com/wp-content/themes/wibmachines/images/logo-wib-colori_footer.svg" alt="WIB Machines">
           </div>
-          <div class="col-sm-3 g-margin-b-40--xs g-margin-b-0--md">
-            <ul class="list-unstyled g-ul-li-tb-5--xs g-margin-b-0--xs">
-              <li><a class="g-font-size-15--xs g-color--white-opacity trackData" data-name="homePrivacyPolicy" href="privacy-policy.html">Privacy Policy</a></li>
-              <li><a class="g-font-size-15--xs g-color--white-opacity trackData" data-name="homeTnC" href="terms-of-service.html">Terms &amp; Conditions</a></li>
-            </ul>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="place">
+              <div class="place-picture">
+                <i class="icon localize"></i>
+              </div>
+              <div class="place-data">
+                <p class="place-data__title">Milan office</p>
+                <p>
+                  Foro Buonaparte 22<br/>
+                  20121 Milan, MI (Italy)<br/>
+                  <a href="tel:+39 02 9285 2263">+39 02 9285 2263</a>
+                  <br/>
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="col-md-4 col-md-offset-2 col-sm-5 col-sm-offset-1 s-footer__logo g-padding-y-50--xs g-padding-y-0--md">
-            <h3 class="g-font-size-18--xs g-color--white">Flinkhub</h3>
-            <p class="g-color--white-opacity">Flinkhub is a platform where you can simply integrate top products and services across the world which are essential for your business growth.
-            </p>
-            <div id="social-icons" class="">
-              <a target="_blank" class="trackData" data-name="homefacebookLink" href="https://www.facebook.com/flinkhub"><img src="https://flinkhub.com/img/socialIcons/Facebook-Icon.svg" alt="Facebook - Flinkhub"></a>
-              <a target="_blank" class="trackData" data-name="hometwitterLink" href="https://twitter.com/flinkhub"><img src="https://flinkhub.com/img/socialIcons/Twitter-Icon.svg" alt="Twitter - Flinkhub"></a>
-              <!--<a target="_blank" class="trackData" data-name="homeLinkedinLink">
-                  <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
-                  <script type="IN/CompanyProfile" data-id="1337" data-format="hover" data-related="false" data-text="LinkedIn"></script>
-              </a>-->
+          <div class="col-sm-4">
+            <div class="place">
+              <div class="place-picture">
+                <i class="icon localize"></i>
+              </div>
+              <div class="place-data">
+                <p class="place-data__title">NY Office</p>
+                <p>
+                  509 Madison Avenue<br/>
+                  10022 New York, USA<br/>
+                  <a href="tel:+1 800 4371 431">+1 800 4371 431</a>
+                  <br/>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="place">
+              <div class="place-picture">
+                <i class="icon localize"></i>
+              </div>
+              <div class="place-data">
+                <p class="place-data__title">R &D</p>
+                <p>
+                  Viale delle Scienze Ed. 16<br/>
+                  90128 Palermo, PA (Italy)<br/>
+                  <a href="tel:+39 091 6615 644">+39 091 6615 644</a>
+                  <br/>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- End Links -->
-
-    <!-- Copyright -->
-    <div class="container g-padding-y-50--xs">
-      <div class="row">
-        <div class="col-xs-6">
-          <a href="index.html">
-            <img class="g-width-100--xs g-height-auto--xs" src="https://storage.googleapis.com/flinkhub-logo/flinkhub_white.png" alt="Flinkhub Logo">
-          </a>
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="nav-secondary">
+              <li>
+                <a href="https://www.wibmachines.com/legal-en">legal</a>
+              </li>
+              <li>
+                <a href="//www.iubenda.com/privacy-policy/8065780" class="iubenda-nostyle iubenda-embed" title="Privacy Policy">privacy &cookie Policy</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="col-xs-6 g-text-right--xs">
-          <p class="g-font-size-14--xs g-margin-b-0--xs g-color--white-opacity-light">© 2017 Flinkhub Inc. All Rights Reserved.</p>
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="company-profile">
+              <li>2017 WIB srl ALL RIGHTS RESERVED</li>
+              <li>REA PA 30976</li>
+              <li>SHARE CAPITAL &euro;25.064,00
+              <li>V.A.T. IT 06257040821</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <a href="https://axura.com/it/" target="_blank" class="credits">
+              <img src="https://www.wibmachines.com/wp-content/themes/wibmachines/images/icon-credits-2x.jpg" alt="Credits: Axura Srl">
+              <span>Credits</span>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- End Copyright -->
-  </footer>
+    </section>
+  </div>
 </template>
 
 <script>

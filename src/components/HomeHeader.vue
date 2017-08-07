@@ -1,29 +1,73 @@
 <template>
-  <section class="s-video-v2__bg" data-vidbg-options="loop: true, muted: true, overlay: false">
-    <div class="container g-position--overlay g-text-center--xs">
-      <div class="g-margin-t-100--xs g-margin-b-100--xs g-margin-b-250--md main_content">
-        <h1 class="g-font-size-36--xs g-font-size-50--sm g-font-size-60--md g-color--white">AI-driven sales channel</h1>
-        <div style="margin-top:5%;">
 
-                     <span class="g-text-center--xs">
-                         <a href="https://flinkhub.com/app" class="text-uppercase s-btn s-btn--md s-btn--primary-bg g-radius--50 g-padding-x-80--xs try_flinkboard trackData" data-name="tryFlinkboard">Try Flinkboard</a>
-                    </span>
-
-          <span class="g-display-block--xs g-display-inline-block--sm g-padding-x-5--xs g-margin-b-10--xs g-margin-b-0--sm">
-                        <!--<button type="button" class="text-uppercase s-btn s-btn-icon--md s-btn--white-brd g-radius--50 g-padding-x-80--xs" data-toggle="modal" data-target="#myModal">Talk to expert</button>-->
-                         <a href="http://localhost:8090/#/login" target="_blank" class="text-uppercase s-btn s-btn--white-brd s-btn--md  g-radius--50 g-padding-x-80--xs talkto_expert trackData" data-name="talktoExpert" data-toggle="modal">后台管理</a>
-                    </span>
-        </div>
-        <div>
-          <a href="#js__scroll-to-section" class="s-scroll-to-section-v1--bc g-margin-b-15--xs" style="bottom: 3.625rem;">
-            <span class="g-font-size-18--xs g-color--white ti-angle-double-down"></span>
-            <p class="text-uppercase g-color--white g-letter-spacing--3 g-margin-b-0--xs trackData" data-name="learnMore">Learn More</p>
-          </a>
+<div>
+  <section class="messages-wrapper enabled" style="position: absolute">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <p>Give your e-commerce platform an interactive physical touchpoint</p>
         </div>
       </div>
-
     </div>
   </section>
+  <section class="main-header" style="position: absolute">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2 col-sm-6 col-xs-6">
+          <a href="https://www.wibmachines.com">
+            <img src="https://www.wibmachines.com/wp-content/themes/wibmachines/images/logo-wib-colori.svg" alt="WIB Machines">
+          </a>
+        </div>
+        <div class="col-md-8 menu-desktop">
+          <ul class="main-nav">
+            <li class="nav-item nav-item--primary">
+              <a href="https://www.wibmachines.com/what-is-wib-en">What is WIB?</a>
+            </li>
+            <li class="nav-item nav-item--primary">
+              <a href="https://www.wibmachines.com/store-en">store</a>
+            </li>
+            <li class="nav-item nav-item--primary last">
+              <a href="https://www.wibmachines.com/pickup-en">pickup</a>
+            </li>
+            <li class="nav-item nav-item--secondary">
+              <a href="https://www.wibmachines.com/software-en">Software</a>
+            </li>
+            <li class="nav-item nav-item--secondary">
+              <a href="https://www.wibmachines.com/services">services</a>
+            </li>
+            <li class="nav-item nav-item--secondary">
+              <a href="https://www.wibmachines.com/company">company</a>
+            </li>
+            <li class="nav-item nav-item--secondary">
+              <a href="https://www.wibmachines.com/blog-en">Blog</a>
+            </li>
+            <li class="nav-item nav-item--secondary">
+              <a href="/#/login" target="_blank">后台管理</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6">
+          <ul class="secondary-nav">
+            <li class="open-ricerca">
+              <i class="icon ricerca"></i>
+            </li>
+            <li class="open-lingue">
+              <i class="icon lingue-positivo"></i>
+              <span>Eng</span>
+            </li>
+            <li>
+              <div class="open-menu" id="apri-menu">
+                <button class="c-hamburger c-hamburger--htx">
+                  <span>toggle menu</span>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 </template>
 <script>
   export default {

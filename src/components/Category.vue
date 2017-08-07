@@ -104,6 +104,7 @@
         .then(response => {
           this.categories = response.body.data
           this.categories.forEach(category => {
+            category.values = []
             if(category.pid == 0) {
              this.pid_0.push(category)
             }
