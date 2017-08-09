@@ -130,7 +130,7 @@
                  <li><router-link to="/nav/pvalues"><i class="fa fa-circle-o"></i>规格管理</router-link></li>
                </ul>
              </li>
-             <li class=""><router-link to="/nav/add"><i class="fa fa-book"></i><span>补货管理</span></router-link>
+             <li class=""><router-link to="/nav/add"><i class="fa fa-book"></i><span>售货机管理</span></router-link>
              </li>
            </ul>
          </section>

@@ -14,6 +14,7 @@ import Home from '@/components/Home'
 import Navigation from '@/components/Navigation'
 import Order from '@/components/Order'
 import Staff from '@/components/Staff'
+import Details from '@/components/Details'
 
 Vue.use(Router)
 
@@ -81,6 +82,10 @@ var router = new Router({
         {
           path: 'add',
           component: Add
+        },
+        {
+          path: 'details',
+          component: Details
         }
       ]
     }
