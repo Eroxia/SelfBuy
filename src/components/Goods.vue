@@ -37,8 +37,8 @@
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding" >
-              <table class="table" >
+            <div class="box-body table-responsive no-padding">
+              <table class="table">
                 <thead>
                  <tr>
                   <th>ID</th>
@@ -61,7 +61,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(sku,index) in good.skus"  style="background-color:gainsboro">
+                          <tr v-for="(sku,index) in good.skus" style="background-color:gainsboro">
                             <td style="width: 20%"><a style="color: black" v-for="value in sku.pvalues">{{ value.value }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </td>
                             <td style="width: 8%">￥{{ sku.price}}</td>
                             <td style="width: 8%">{{ sku.totalStock}}</td>

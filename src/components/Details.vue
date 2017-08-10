@@ -4,7 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        售货机管理
+        商品 库存管理
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -12,25 +12,60 @@
       </ol>
     </section>
     <!-- Main content -->
-    <section class="content">
+    <section class="content" style="height: 100%">
       <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">商品列表</h3>
+              <div class="box-tools">
+                <!--<ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>-->
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-
-      <!-- /.box-header -->
-      <div class="col-lg-3 col-xs-6" >
-        <div class="small-box bg-green">
-          <div class="inner">
-            <h3>需补货：150</h3>
-            <p>同济大学四平路校区</p>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>商品名称</th>
+                    <th>规格</th>
+                    <th>价格</th>
+                    <th>库存</th>
+                    <th>需补</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="sku in skus">
+                    <td  style="width: 20%">{{sku.goodsName}}</td>
+                    <td>{{sku.price}}</td>
+                    <td>{{sku.price}}</td>
+                    <td>{{sku.totalStock}}</td>
+                    <td>{{sku.saleStock}}</td>
+                    <td><a href="#"></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
           </div>
-          <div class="icon">
-            <i class="ion ion-bag"></i>
-          </div>
-          <a href="#" class="small-box-footer">详情<i class="fa fa-arrow-circle-right"></i></a>
+          <!-- /.box -->
         </div>
       </div>
-      <!-- /.box-body -->
-
+      <!-- /.row -->
       <!-- Main row -->
     </section>
     <!-- /.content -->
@@ -38,6 +73,18 @@
 </template>
 <script>
   export default {
-    name: 'details'
+    name: 'details',
+    data() {
+      return {
+        id: this.$route.params.id,
+        skus: []
+      }
+    },
+    created: function() {
+      this.$http.get('http://test.cloudwarehub.com/skuStock?shopId=' + this.id)
+        .then( resp => {
+          this.skus = resp.body.data
+        })
+    }
   }
 </script>

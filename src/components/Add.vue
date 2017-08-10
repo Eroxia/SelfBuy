@@ -21,12 +21,13 @@
               <div class="small-box bg-green">
                 <div class="inner">
                   <h3>需补货：150</h3>
-                  <p>同济大学四平路校区</p>
+                  <p>{{shop.id}}</p>
+
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
                 </div>
-                <a href="#" class="small-box-footer">详情<i class="fa fa-arrow-circle-right"></i></a>
+                <router-link :to="{name: 'details', params:{id: shop.id}}" class="small-box-footer">详情<i class="fa fa-arrow-circle-right"></i></router-link>
               </div>
             </div>
             <!-- /.box-body -->
@@ -44,8 +45,7 @@
     data() {
       return {
         apiUrl: 'http://test.cloudwarehub.com/shop?page=0&pageSize=1000',
-        shops: [],
-        shop_id: ''
+        shops: []
       }
     },
     created() {

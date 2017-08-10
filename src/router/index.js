@@ -84,7 +84,8 @@ var router = new Router({
           component: Add
         },
         {
-          path: 'details',
+          path: 'add/:id',
+          name: 'details',
           component: Details
         }
       ]
