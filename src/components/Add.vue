@@ -17,12 +17,11 @@
 
 
             <!-- /.box-header -->
-            <div class="col-lg-3 col-xs-6" v-for="shop in shops">
+            <div class="col-lg-3 col-xs-6" v-for="(shop,index) in shops">
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>需补货：150</h3>
+                  <h3>{{index}}号机柜</h3>
                   <p>{{shop.id}}</p>
-
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>

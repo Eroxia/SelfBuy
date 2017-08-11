@@ -62,7 +62,7 @@
                         </thead>
                         <tbody>
                           <tr v-for="(sku,index) in good.skus" style="background-color:gainsboro">
-                            <td style="width: 20%"><a style="color: black" v-for="value in sku.pvalues">{{ value.value }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </td>
+                            <td style="width: 20%"><a style="color: black" v-for="value in sku.pvalues">{{value.value}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </td>
                             <td style="width: 8%">￥{{ sku.price}}</td>
                             <td style="width: 8%">{{ sku.totalStock}}</td>
                             <td style="width: 10%">&nbsp;&nbsp;
@@ -328,13 +328,6 @@
 
                       <div class="col-sm-10">
                        <input v-model="item3.price" type="text" class="form-control" placeholder="¥">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label  class="col-sm-2 control-label">库存:</label>
-                      <div class="col-sm-10">
-                        <input  class="form-control" v-model="item3.totalStock" >
                       </div>
                     </div>
                     <div class="form-group">
