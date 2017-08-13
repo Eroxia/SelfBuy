@@ -125,7 +125,7 @@
       },
       deleteCate() {
         this.$http.delete('http://test.cloudwarehub.com/category/' + this.cate.id)
-          .then(response => {
+          .then( response => {
             this.pid_0.splice(this.index, 1)
           })
       },

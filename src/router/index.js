@@ -15,6 +15,8 @@ import Navigation from '@/components/Navigation'
 import Order from '@/components/Order'
 import Staff from '@/components/Staff'
 import Details from '@/components/Details'
+import TotalStock from '@/components/TotalStock'
+import Replenishment from '@/components/Replenishment'
 
 Vue.use(Router)
 
@@ -87,6 +89,16 @@ var router = new Router({
           path: 'add/:id',
           name: 'details',
           component: Details
+        },
+        {
+          path: 'devices/:id',
+          name: 'Replenish',
+          component: Replenishment
+        },
+        {
+          path: 'add/:id',
+          name: 'totalStock',
+          component: TotalStock
         }
       ]
     }

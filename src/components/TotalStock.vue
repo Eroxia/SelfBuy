@@ -1,6 +1,4 @@
 <template>
-
-
   <div class="content-wrapper" style="padding-top: 4%">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -43,18 +41,46 @@
               <table class="table table-hover">
                 <tbody>
                 <tr>
-                  <th>ID</th>
-                  <th>下单时间</th>
-                  <th>支付时间</th>
+                  <th>商品名称</th>
+                  <th>规格</th>
+                  <th>时间</th>
                   <th>金额</th>
                   <th>状态</th>
                 </tr>
-                <tr v-for="order in orders">
-                  <td>{{order.id}}</td>
-                  <td>{{order.createdAt}}</td>
-                  <td>{{order.finishAt}}</td>
-                  <td>¥{{order.price.toFixed(2)}}</td>
-                  <td><span v-if="order.payStatus == 0" class="label label-default">待支付</span><span v-if="order.payStatus == 1" class="label label-success">交易成功</span><span v-if="order.payStatus == 2" class="label label-danger">交易失败</span></td>
+                <tr>
+                  <td>2dB48NRx2tkIV7euSfn46mH</td>
+                  <td>可口可乐</td>
+                  <td>2017-03-30 13:23:32</td>
+                  <td>¥3.50</td>
+                  <td><span class="label label-success">成功</span></td>
+                </tr>
+                <tr>
+                  <td>2dB48NRx2tkIV7euSfn46mH</td>
+                  <td>可口可乐</td>
+                  <td>2017-03-30 13:23:32</td>
+                  <td>¥3.50</td>
+                  <td><span class="label label-success">成功</span></td>
+                </tr>
+                <tr>
+                  <td>2dB48NRx2tkIV7euSfn46mH</td>
+                  <td>可口可乐</td>
+                  <td>2017-03-30 13:23:32</td>
+                  <td>¥3.50</td>
+                  <td><span class="label label-success">成功</span></td>
+                </tr>
+                <tr>
+                  <td>2dB48NRx2tkIV7euSfn46mH</td>
+                  <td>可口可乐</td>
+                  <td>2017-03-30 13:23:32</td>
+                  <td>¥3.50</td>
+                  <td><span class="label label-success">成功</span></td>
+                </tr>
+                <tr>
+                  <td>2dB48NRx2tkIV7euSfn46mH</td>
+                  <td>可口可乐</td>
+                  <td>2017-03-30 13:23:32</td>
+                  <td>¥3.50</td>
+                  <td><span class="label label-success">成功</span></td>
                 </tr>
                 </tbody>
               </table>
@@ -72,19 +98,11 @@
     <!-- /.content -->
   </div>
 </template>
-
 <script>
   export default {
-    name: 'Order',
-    data() {
-      return {
-        orders: []
-      }
-    },
-    created() {
-      this.$http.get('http://test.cloudwarehub.com/order?page=1&pageSize=999').then(resp => {
-        this.orders = resp.body.data
-      })
+    name: 'totalStock',
+    data(){
+
     }
   }
 </script>

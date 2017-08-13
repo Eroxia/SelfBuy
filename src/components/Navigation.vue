@@ -100,7 +100,7 @@
              </li>
 
              <li class="">
-               <router-link to="/nav/devices"><i class="fa fa-laptop"></i> <span>设备管理</span></router-link>
+               <router-link to="/nav/devices"><i class="fa fa-laptop"></i> <span>补货管理</span></router-link>
              </li>
 
              <li class="treeview">
