@@ -22,9 +22,10 @@
                       <thead>
                       <tr>
                         <th style="width: 2%"></th>
-                        <th>Unit ID</th>
                         <th style="width: 20%">商品名称</th>
                         <th style="width: 20%">规格</th>
+                        <th style="width: 10%">当前库存</th>
+                        <th style="width: 10%">銷量</th>
                         <th>价格</th>
                         <th style="width: 10%">操作</th>
                       </tr>
@@ -32,9 +33,10 @@
                       <tbody>
                       <tr v-for="(sku,index) in shopskus">
                         <td><input type="checkbox" v-model="sku.checked"></td>
-                        <td>{{index}}</td>
                         <td>{{sku.goodsName}}</td>
                         <td><span v-for="col in sku.pvalues">{{col.value}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                        <td><small style="margin-left:15px " class="label bg-red">{{sku.totalStock}}</small></td>
+                        <td><small class="label bg-green">{{sku.saleNum}}</small></td>
                         <td>¥{{sku.price}}</td>
                         <td><a @click="deletesku(sku,index)"><span class="glyphicon glyphicon-minus"></span></a></td>
                       </tr>

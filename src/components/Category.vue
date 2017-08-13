@@ -1,6 +1,5 @@
 <template>
   <div class="content-wrapper" style="padding-top: 3%">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>分类管理</h1>
       <ol class="breadcrumb">
@@ -8,15 +7,13 @@
         <li class="active">分类管理</li>
       </ol>
     </section>
-    <!-- Main content -->
     <section class="content" >
+
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" v-for="(cate,index) in pid_0">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
-              <a  data-toggle="collapse"  data-parent="#accordion"  aria-expanded="true"  aria-controls="collapseOne">
-                {{ cate.name }}
-              </a>
+              <a  data-toggle="collapse"  data-parent="#accordion"  aria-expanded="true"  aria-controls="collapseOne">{{cate.name}}</a>
               <a style="float: right" @click="capture(cate,index)"  data-toggle="modal" data-target=".bs-example-modal-sm"><span class="glyphicon glyphicon-trash"></span></a>
             </h4>
           </div>
@@ -28,8 +25,7 @@
                   <tr v-for="(col, index) in cate.values">
                     <td style="width: 40%; padding-left: 10px">{{ col.name }}</td>
                     <td style="width: 30%"></td>
-                    <td><a><span class="glyphicon glyphicon-pencil"></span></a></td>
-                    <td><a @click="deleteValue(cate, index ,col)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                    <td><a @click="deleteValue(col, index)"><span class="glyphicon glyphicon-trash"></span></a></td>
                   </tr>
                   <tr>
                     <td colspan="5">
@@ -50,6 +46,7 @@
           </div>
         </div>
       </div>
+
       <div>
         <form class="form-inline">
           <div class="form-group">
@@ -63,6 +60,7 @@
           <button type="submit" class="btn btn-success"  @click="add">确认添加</button>
         </form>
       </div>
+
       <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-sm" role="document ">
           <div class="modal-content"  style="margin-top: 70%;border-radius: 4px">
@@ -102,20 +100,23 @@
     created() {
       this.$http.get('http://test.cloudwarehub.com/category')
         .then(response => {
-          this.categories = response.body.data
-          this.categories.forEach(category => {
-            category.values = []
-            if(category.pid == 0) {
-             this.pid_0.push(category)
+          var datas = response.body.data
+          var pid_1 = []
+          datas.forEach(data => {
+            if(data.pid == 0) {
+              data.values = []
+              pid_1.push(data)
             }
           })
-         this.categories.forEach(category => {
-           this.pid_0.forEach(pid => {
-             if(category.pid == pid.id) {
-               pid.values.push(category)
-             }
-           })
-         })
+          console.log(pid_1)
+          datas.forEach(data => {
+            datas.forEach(data_2 => {
+              if(data.id == data_2.pid) {
+                data.values.push(data_2)
+              }
+            })
+          })
+         this.pid_0 = pid_1
         })
     },
     methods: {
@@ -160,16 +161,15 @@
           })
       },
       //删除pid:0分类下的value
-      deleteValue(cate, index, col) {
+      deleteValue(col, index) {
         this.$http.delete('http://test.cloudwarehub.com/category/' + col.id)
           .then(response => {
             this.pid_0.forEach(pid => {
-              pid.values.forEach(value => {
-                if(value.id == col.id) {
-                  cate.values.splice(index, 1)
-                }
-              })
+              if (col.pid == pid.id) {
+                pid.values.splice(index, 1)
+              }
             })
+
           })
       }
     }
