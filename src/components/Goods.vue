@@ -54,17 +54,15 @@
                     <td style="width: 60%">
                       <table class="table table-hover subtable" >
                         <thead>
-                          <tr >
+                          <tr>
                             <th width="30%"><b>名称</b></th>
                             <th width="20%"><b>价格</b></th>
-                            <th width="20%"><b>库存</b></th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr v-for="(sku,index) in good.skus" style="background-color:gainsboro">
                             <td style="width: 20%"><a style="color: black" v-for="value in sku.pvalues">{{value.value}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </td>
                             <td style="width: 8%">￥{{ sku.price}}</td>
-                            <td style="width: 8%">{{ sku.totalStock}}</td>
                             <td style="width: 10%">&nbsp;&nbsp;
                               <a @click="captureSku(index,sku)" data-toggle="modal" data-target="#exampleModal">
                                 <span class="glyphicon glyphicon-pencil"></span>
@@ -193,9 +191,6 @@
       </div>
       <input style="display: none;" id="browse" type="file" @change="previewFiles()" multiple>
     </div>
-
-
-
     <!-- /.content -->
     <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
       <div class="modal-dialog" role="document">

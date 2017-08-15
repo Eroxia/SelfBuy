@@ -238,7 +238,7 @@
                 }
                   var obj2 = {
                     goodsName: sku.goodsName,
-                    price: sku.price,
+                    price,
                     pvalues: []
                   }
                   sku.pvalues.forEach(pvalue => {
