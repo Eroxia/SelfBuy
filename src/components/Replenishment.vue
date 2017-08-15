@@ -109,6 +109,7 @@
       this.shopskus = shop
     },
     methods: {
+      //移动函数
       move (sku,event) {
         var x = event.target
         //获取当前表格的坐标
