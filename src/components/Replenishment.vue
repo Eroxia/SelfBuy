@@ -124,20 +124,23 @@
         console.log(parseInt(buttonTop / 50 - 1))
         console.log(parseInt(buttonLeft / 156))
         */
+        var buttonWidth = $('#' + sku.id).width()
+        console.log(buttonWidth)
+        console.log(buttonLeft)
         //拖动商品之后的位置 和 table的位置比对  应该push到哪一行 哪一列
         var Y = parseInt(buttonTop / 51 - 2)
-       /* var X = parseInt((buttonLeft / (51 * sku.size)) - 1)*/
-        var X = parseInt((buttonLeft /( parseInt((100/19)*10) * sku.size) ) -1 )
+       /* var X = parseInt((buttonLeft / (51 * sku.size)) - 1)
+        var X = parseInt((buttonLeft /( parseInt((100/19)*10) * sku.size) ) -1 )*/
+       var X = parseInt((buttonLeft/156)-1)
         //X.Y 数值过大自动返回
         //拖动完后后 恢复初始位置
         x.style.top = 0 + 'px'
         x.style.left = 0 + 'px'
         console.log()
         //push到对应的行和列
-        if(Y < 10 && X < parseInt(19/3) + 1 ) {
           this.shopskus.shelfs[Y].units[X].sku.name = sku.goodsName
           this.shopskus.shelfs[Y].units[X].size = '3'
-        }
+
       }
     }
   }
