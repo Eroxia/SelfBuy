@@ -95,7 +95,7 @@
           this.rightskus = rightskus
         })
       //定义图形化数据结构
-      var shop = {}
+      var shop = { }
       shop.shelfs = []
 
       for (let i = 0; i < 10; i++) {
