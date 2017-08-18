@@ -9,7 +9,7 @@
             <th :width="100/19 + '%'" v-for="index in 19">{{index}}</th>
           </tr>
           <tr v-for="(shelf,index) in shopskus.shelfs">
-            <td style="text-align: center" v-for="unit in shelf.units" v-bind:id=index v-bind:colspan="unit.size">
+            <td style="text-align: center" v-for="unit in shelf.units" v-bind:colspan="unit.size">
               <div style="cursor:move;" class="btn btn-info">{{unit.sku.name}}</div>
             </td>
           </tr>
@@ -89,7 +89,7 @@
           }, 500)
           //分割skus数组
           var min = parseInt((resp.body.data.length / 2))
-          var leftskus = resp.body.data.slice(0,min)
+          var leftskus = resp.body.data.slice(0, min)
           var rightskus = resp.body.data.slice(min, resp.body.data.length.length)
           this.leftskus = leftskus
           this.rightskus = rightskus
@@ -124,23 +124,21 @@
         console.log(parseInt(buttonTop / 50 - 1))
         console.log(parseInt(buttonLeft / 156))
         */
-        var buttonWidth = $('#' + sku.id).width()
-        console.log(buttonWidth)
-        console.log(buttonLeft)
+        //获取页面每个td的宽度
+        var td = $('#table').width()
+        var tdWidth = parseInt(td/19 * 3)
         //拖动商品之后的位置 和 table的位置比对  应该push到哪一行 哪一列
         var Y = parseInt(buttonTop / 51 - 2)
        /* var X = parseInt((buttonLeft / (51 * sku.size)) - 1)
         var X = parseInt((buttonLeft /( parseInt((100/19)*10) * sku.size) ) -1 )*/
-       var X = parseInt((buttonLeft/156)-1)
+        var X = parseInt((buttonLeft /tdWidth -1))
         //X.Y 数值过大自动返回
         //拖动完后后 恢复初始位置
         x.style.top = 0 + 'px'
         x.style.left = 0 + 'px'
-        console.log()
         //push到对应的行和列
-          this.shopskus.shelfs[Y].units[X].sku.name = sku.goodsName
-          this.shopskus.shelfs[Y].units[X].size = '3'
-
+        this.shopskus.shelfs[Y].units[X].sku.name = sku.goodsName
+        this.shopskus.shelfs[Y].units[X].size = '3'
       }
     }
   }
