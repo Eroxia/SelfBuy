@@ -21,16 +21,16 @@
                   街道：<select id='street' style="width:100px"  @change='setCenter($event)'></select>
                   <br>
                   <br>
-                  机器编号:<input type="text" style="width:100px"/>
+                  机器编号:<input type="text" v-model="No" style="width:100px"/>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">离开</button>
-                  <button type="button" class="btn btn-primary">保存</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" @click="makeSure">确定</button>
                 </div>
               </div>
             </div>
           </div>
-        <button type="button" class="btn btn-warning">移动坐标</button>
+        <button type="button" class="btn btn-warning" @click="movePoint">移动坐标</button>
         <button type="button" class="btn btn-danger">删除坐标</button>
         <button type="button" class="btn btn-success" @click="save">保存全部</button>
       </span>
@@ -42,28 +42,30 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   export default {
     name: 'Add',
     data () {
       return {
         apiUrl: 'http://test.cloudwarehub.com/shop?page=0&pageSize=1000',
         shops: [],
+        No: [],
         show: false,
         map: null,
         district: null,
         polygons: null,
-        getData: null
+        getData: null,
+        pointLng: '',
+        pointLat: '',
+        markers: []
       }
     },
-    created () {
+    created() {
       this.$http.get(this.apiUrl)
         .then(resp => {
           this.shops = resp.body.data
           this.shop_id = this.shops.id
         })
-
-
-
       //加载地图 100毫秒后执行
       setTimeout(() => {
         var map, district, citycode, polygons = []
@@ -77,6 +79,48 @@
           //地图默认缩放比例
           zoom: 11,
         })
+
+        //加载出每个坐标
+        var lnglats = [
+          [120.195461, 30.240014],
+          [120.195461, 30.230014],
+          [120.195461, 30.220014],
+          [120.195461, 30.210014]
+        ]
+        //给每个坐标点添加样式属性
+      /*  AMapUI.loadUI(['overlay/SimpleMarker'], (SimpleMarker) => {
+          for (let i=0; i<lnglats.length; i++) {
+            var marker = new SimpleMarker({
+              iconLabel: '#' + i,
+              iconStyle: 'blue',
+              map: map,
+              position: lnglats[i],
+              draggable: false
+            });
+          };
+        }); */
+      var markers = []
+        for (let i=0; i<lnglats.length; i++) {
+          AMapUI.loadUI(['overlay/SimpleMarker'], (Marker) => {
+           var marker =  new Marker({
+              iconLabel: {
+                style: {
+                  color: '#fff',
+                  fontSize: '120%',
+                  marginTop: '2px'
+                },
+                innerHTML: '#'+i
+              },
+              iconStyle: 'blue',
+              map: map,
+              position: lnglats[i],
+              draggable: false
+            });
+            markers.push(marker)
+          });
+        }
+        console.log(markers)
+        this.markers = markers
         //行政区划分
         var opts = {
           subdistrict: 1,   //返回下一级行政区
@@ -172,10 +216,54 @@
       },
       setCenter(e) {
         var obj = e.target
+        //设置地图中心点为选中的位置
         this.map.setCenter(obj[obj.options.selectedIndex].center)
+        //传递经纬度坐标
+        var point = obj[obj.options.selectedIndex].center
+        this.pointLng = point.lng
+        this.pointLat = point.lat
+        //清除地图标记覆盖物
         for (var i = 0, l = this.polygons.length; i < l; i++) {
           this.polygons[i].setMap(null);
         }
+      },
+      makeSure() {
+      /*  new AMap.Marker({
+          map: this.map,
+          //图标位置
+          position: [this.pointLng, this.pointLat],
+          //坐标icon
+          icon: new AMap.Icon({
+            size: new AMap.Size(40, 50),  //图标大小
+            image: "http://webapi.amap.com/theme/v1.3/images/newpc/way_btn2.png",
+            imageOffset: new AMap.Pixel(0, -60)
+          }),
+          //可移动
+          draggable: true,
+          cursor: 'move',
+        })*/
+        AMapUI.loadUI(['overlay/SimpleMarker'], (SimpleMarker) => {
+          new SimpleMarker({
+            //普通文本
+            iconLabel: '#' + this.No ,
+            iconStyle: 'blue',
+            map: this.map,
+            position: [this.pointLng, this.pointLat],
+            draggable: true
+          });
+        })
+      },
+      movePoint() {
+       this.markers.forEach((marker) => {
+          marker.setDraggable(true)
+          marker.setIconStyle('green')
+        })
+      },
+      save() {
+        this.markers.forEach((marker) => {
+          marker.setDraggable(false)
+          marker.setIconStyle('blue')
+        })
       }
     }
   }
