@@ -1,171 +1,169 @@
 <template>
-  <div class="content-wrapper" style="padding-top: 3%">
-    <div>
-      <span style="margin-left: 20px;border: 1px;">
-        <button type="button" class="btn btn-primary" style="width: 80px" data-toggle="modal"
-                data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-plus"></span></button>
-        <!--模态框-->
-          <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
-               id="123">
-            <div class="modal-dialog" role="document" style="margin-top:10%">
+  <div id="contentWrapper" class="content-wrapper">
+      <span id="spanEdge">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+          <div id="modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+               aria-labelledby="gridSystemModalLabel">
+            <div id="modelContent" class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header btn-primary">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title" id="gridSystemModalLabel">选择增加位置</h4>
                 </div>
-                <!--选择城市下拉表-->
-                <div id="tip" class="modal-body">
+                <div id="lists" class="modal-body">
                   <br>
-                  省：<select id='province' style="width:100px" @change="search($event)"></select>
-                  市：<select id="city" style="width:100px" @change="search($event)"></select>
-                  区：<select id='district' style="width:100px" @change="search($event)"></select>
-                  街道：<select id='street' style="width:100px" @change='setCenter($event)'></select>
-                  <br>
-                  <br>
-                  编号：<input type="text" v-model="No" style="width:200px"><span v-show="show" style="margin-left: 20px;"><a
-                  style="color: red">请输入机器编号！</a></span>
+                  省：<select id='province' @change="search($event)"></select>
+                  市：<select id="city" @change="search($event)"></select>
+                  区：<select id='district' @change="search($event)"></select>
+                  街道：<select id='street' @change="setCenter($event)"></select>
+                  <br><br>
+                  位置：<input v-model="itemName" type="text"><span><a v-show="show" id="a">请输入机器的位置</a></span>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">离开</button>
-                  <button type="button" class="btn btn-primary" @click="makeSure">确定</button>
+                  <button type="button" class="btn btn-primary" @click="Sure">确定</button>
                 </div>
               </div>
             </div>
           </div>
-         <button @click="movePoint" type="button" class="btn btn-success" style="width: 80px"><span
-           class="glyphicon glyphicon-pencil"></span></button>
-         <button @click="save" type="button" class="btn btn-primary" style="width: 80px"><span
-           class="glyphicon glyphicon-ok"></span></button>
       </span>
-      <div class="amap-page-container">
-      </div>
-    </div>
-    <div id="container" style="height: 900px"></div>
+    <div id="container"></div>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-
   export default {
     name: 'Add',
-    data () {
+    data() {
       return {
-        apiUrl: 'http://test.cloudwarehub.com/shop?page=0&pageSize=1000',
-        shops: [],
-        No: '',
-        show: false,
+        shops: null,
         map: null,
-        district: null,
-        polygons: null,
         getData: null,
-        pointLng: '',
-        pointLat: '',
-        markers: [],
-        createMarker: null
+        polygons: null,
+        district: null,
+        show: false, //提示
+        itemName: '',
+        createMarker: null,
+        pointer: null, //选择的中心店
       }
     },
-    created () {
-      this.$http.get(this.apiUrl)
+    created() {
+      //获取所有商店的坐标和id
+      this.$http.get('http://test.cloudwarehub.com/shop?page=0&pageSize=1000')
         .then(resp => {
           this.shops = resp.body.data
-          this.shop_id = this.shops.id
         })
-      //加载地图 100毫秒后执行
+      //加载地图
+      var me = this
       setTimeout(() => {
-        var map, district, citycode, polygons = []
+        //根据ID初始哈所有dom
+        var polygons = []
         var citySelect = document.getElementById('city')
         var districtSelect = document.getElementById('district')
         var areaSelect = document.getElementById('street')
-        map = new AMap.Map('container', {
+        //指定地图所在的容器
+        var map = new AMap.Map('container', {
+          //地图是否可重置大小
           resizeEnable: true,
           //地图中心坐标
           center: [120.195461, 30.240014],
           //地图默认缩放比例
           zoom: 11,
         })
-
-        //加载出每个坐标
-        var lnglats = [
-          [120.195461, 30.240014],
-          [120.195461, 30.230014],
-          [120.195461, 30.220014],
-          [120.195461, 30.210014]
-        ]
-        //给每个marker点添加样式属性
-        var markers = []
-        var createMarker = function (i, Marker, position, draggable, color) {
-          var marker = new Marker({
-            iconLabel: {
-              style: {
-                color: '#fff',
-                fontSize: '120%',
-                marginTop: '2px'
+        //定义marker(标记)的构造函数
+        var createMarker = function(name, position, draggable, color, id) {
+          AMapUI.loadUI(['overlay/SimpleMarker'], (Marker) => {
+            var marker = new Marker({
+              iconLabel: {
+                style: {
+                  color: '#fff',
+                  fontSize: '120%',
+                  marginTop: '2px'
+                },
+                innerHTML: 'O'
               },
-              innerHTML: '#' + i
-            },
-            iconStyle: color,
-            map: map,
-            position: position,
-            draggable: draggable
+              iconStyle: color,
+              map: map,
+              position: position,
+              draggable: draggable
+            })
+            AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow) => {
+              var infoWindow = new SimpleInfoWindow({
+                myCustomHeader: '我的header',
+                myCustomFooter: '我的footer',
+                infoTitle: '<div><strong>' + name + '</strong></div>',
+                infoBody: '<a class=\'trashThis\' style=\'padding: 10px;color: red\'>' + '<span class=\'glyphicon glyphicon-trash\'></span></a>' +
+                '<a style=\'padding-left: 10px;color: green\'><span class=\'glyphicon glyphicon-move\'></span></a>' +
+                '<a style=\'padding-left: 22px;color: blue\'><span class=\'glyphicon glyphicon-check\'></span></a>' +
+                '<a style=\'padding-left: 25px\'><span class=\'glyphicon glyphicon-circle-arrow-right\'></span></a>',
+
+                //基点指向marker的头部位置
+                offset: new AMap.Pixel(0, -31)
+              })
+              //根据class名称绑定事件 绑定删除事件
+              infoWindow.get$InfoBody().on('click', '.trashThis', (event) => {
+                //阻止冒泡
+                event.stopPropagation()
+                //移除标记点
+                me.$http.delete('http://test.cloudwarehub.com/shop/' + id)
+                  .then( resp => { map.remove(marker) })
+                //关闭弹出窗口
+                infoWindow.close(map, marker.getPosition())
+              })
+              //绑定移动事件
+              infoWindow.get$InfoBody().on('click', '.glyphicon-move', (event) => {
+                //阻止冒泡
+                event.stopPropagation()
+                marker.setIconStyle('green')
+                marker.setDraggable(true)
+                infoWindow.close(map, marker.getPosition())
+              })
+              //绑定确认事件
+              infoWindow.get$InfoBody().on('click', '.glyphicon-check', (event) => {
+                //阻止冒泡
+                event.stopPropagation()
+                marker.setIconStyle('blue')
+                marker.setDraggable(false)
+                var thisPosition = [marker.getPosition().lng, marker.getPosition().lat]
+                me.$http.put('http://test.cloudwarehub.com/shop/' + id, {id: id, gps: JSON.stringify(thisPosition) })
+              })
+              //绑定详情事件
+              infoWindow.get$InfoBody().on('click', '.glyphicon-circle-arrow-right', (event) => {
+                //阻止冒泡
+                event.stopPropagation()
+                window.location.assign("http://localhost:8090/#/nav/devices/"+id)
+
+              })
+              //打开窗口函数
+              function openInfoWin() {
+                infoWindow.open(map, marker.getPosition())
+              }
+
+              //绑定鼠标点击事件
+              marker.clicked = AMap.event.addListener(marker, 'click', () => {
+                openInfoWin()
+              })
+
+            })
+            return marker
           })
-          AMapUI.loadUI(['overlay/SimpleInfoWindow'], function (SimpleInfoWindow) {
-            var infoWindow = new SimpleInfoWindow({
-              myCustomHeader: '我的header',
-              myCustomFooter: '我的footer',
-              infoTitle: '<div style="padding-left: 52%"><strong>#' + i + '</strong></div>',
-              infoBody: '<a class=\'trashThis\' style=\'padding: 10px;color: red\'><span class=\'glyphicon glyphicon-trash\'></span></a><a style=\'padding-left: 50px\'><span class=\'glyphicon glyphicon-circle-arrow-right\'></span></a>',
-
-              //基点指向marker的头部位置
-              offset: new AMap.Pixel(0, -31)
-            })
-
-            infoWindow.get$InfoBody().on('click', '.trashThis', function (event) {
-              //阻止冒泡
-              event.stopPropagation()
-              //移除标记点
-              map.remove(marker)
-              //关闭弹出窗口
-              infoWindow.close(map, marker.getPosition())
-            })
-
-            //打开窗口函数
-            function openInfoWin () {
-              infoWindow.open(map, marker.getPosition())
-            }
-
-            //绑定鼠标点击事件
-            marker.clicked = AMap.event.addListener(marker, 'click', function () {
-              openInfoWin()
-            })
-
-          })
-          return marker
         }
-        var draggable = false
-        var color = 'blue'
-        AMapUI.loadUI(['overlay/SimpleMarker'], (Marker) => {
-          for (let i = 0; i < lnglats.length; i++) {
-            var marker = createMarker(i, Marker, lnglats[i], draggable, color)
-            markers.push(marker)
-          }
-        })
-        //赋值到全局属性
-        this.markers = markers
         this.createMarker = createMarker
-        //行政区划分
-        var opts = {
+
+        this.shops.forEach(shop => {
+          createMarker(shop.name, JSON.parse(shop.gps), false, 'blue', shop.id)
+        })
+        var district = new AMap.DistrictSearch({
           subdistrict: 1,   //返回下一级行政区
           showbiz: false  //最后一级返回街道信息
-        }
-        district = new AMap.DistrictSearch(opts)
-        district.search('中国', function (status, result) {
+        })
+        district.search('中国', (status, result) => {
           if (status == 'complete') {
             getData(result.districtList[0])
           }
         })
-        this.district = district
-
         var getData = (data, level) => {
           var bounds = data.boundaries
           if (bounds) {
@@ -212,26 +210,18 @@
             }
           }
         }//end getData
+        this.map = map
+        this.district = district
         this.polygons = polygons
         this.getData = getData
-        this.map = map
-      }, 100)
-    },
+      }, 500) //加载完成
+    },//end created
     methods: {
-      edit () {
-        this.show = true
-        $('#button').text('编辑中...')
-      },
-      save () {
-        this.show = false
-        $('#button').text('编辑模式')
-      },
-      search (e) {
+      search(e) {
+        //获取search的dom
         var obj = e.target
         //获取选择的选项
         var option = obj[obj.options.selectedIndex]
-        //获得关键字
-        var keyword = option.text
         //获得选择坐标
         var adcode = option.adcode
         this.district.setLevel(option.value) //行政区级别
@@ -242,83 +232,66 @@
             this.getData(result.districtList[0], obj.id)
           }
         })
-        //清除地图上的覆盖物
-        for (var i = 0, l = this.polygons.length; i < l; i++) {
-          this.polygons[i].setMap(null)
-        }
       },
-      setCenter (e) {
+      setCenter(e) {
         var obj = e.target
         //设置地图中心点为选中的位置
         this.map.setCenter(obj[obj.options.selectedIndex].center)
         //传递经纬度坐标
         var point = obj[obj.options.selectedIndex].center
-        this.pointLng = point.lng
-        this.pointLat = point.lat
+        this.pointer = point
         //清除地图标记覆盖物
         for (var i = 0, l = this.polygons.length; i < l; i++) {
           this.polygons[i].setMap(null)
         }
+        this.map.setZoom(12)
+        this.zoom = 3
       },
-      makeSure () {
-        if (this.No) {
-          var position = [this.pointLng, this.pointLat]
-          AMapUI.loadUI(['overlay/SimpleMarker'], (Marker) => {
-            var Nonum = this.No
-            var marker = this.createMarker(Nonum, Marker, position, true, 'green')
-            this.markers.push(marker)
-          })
-          $('#123').modal('hide')
+      Sure() {
+        if(this.itemName){
+          var name = this.itemName
+          var position = [this.pointer.lng, this.pointer.lat]
+          this.$http.post('http://test.cloudwarehub.com/shop', {name: '测试专用', gps: JSON.stringify(position) })
+            .then( resp => {
+              var id = resp.body.data.id
+              this.createMarker(name, position, true, 'green', id)
+            })
+          $('#modal').modal('hide')
         } else {
           this.show = true
         }
-      },
-      movePoint () {
-        this.markers.forEach((marker) => {
-          marker.setDraggable(true)
-          marker.setIconStyle('green')
-          AMap.event.removeListener(marker.clicked)
-        })
-      },
-      save () {
-        var me = this
-        var i = 0
-        this.markers.forEach((marker) => {
-          marker.setDraggable(false)
-          marker.setIconStyle('blue')
-          AMapUI.loadUI(['overlay/SimpleInfoWindow'], (SimpleInfoWindow) => {
-            var infoWindow = new SimpleInfoWindow({
-              myCustomHeader: '我的header',
-              myCustomFooter: '我的footer',
-              infoTitle: '<div style="padding-left: 52%"><strong>#' + (i++) + '</strong></div>',
-              infoBody: '<a class=\'trashThis\' style=\'padding: 10px;color: red\'><span class=\'glyphicon glyphicon-trash\'></span></a><a style=\'padding-left: 50px\'><span class=\'glyphicon glyphicon-circle-arrow-right\'></span></a>',
-
-              //基点指向marker的头部位置
-              offset: new AMap.Pixel(0, -31)
-            })
-
-            infoWindow.get$InfoBody().on('click', '.trashThis', (event) => {
-              //阻止冒泡
-              event.stopPropagation()
-              //移除标记点
-              this.map.remove(marker)
-              //关闭弹出窗口
-              infoWindow.close(me.map, marker.getPosition())
-            })
-
-            //打开窗口函数
-            function openInfoWin () {
-              infoWindow.open(me.map, marker.getPosition())
-            }
-
-            //绑定鼠标点击事件
-            marker.clicked = AMap.event.addListener(marker, 'click', function () {
-              openInfoWin()
-            })
-
-          })
-        })
       }
     }
   }
 </script>
+
+<style>
+  #contentWrapper {
+    padding-top: 3%;
+  }
+  #container {
+    height: 900px;
+  }
+  #spanEdge {
+    margin-left: 20px;
+    border: 1px;
+  }
+  #modelContent {
+    margin-top: 10%;
+  }
+  #lists select {
+    width: 100px;
+  }
+  #lists input {
+    width: 200px;
+  }
+  #lists input span {
+    margin-left: 20px;
+  }
+  #a {
+    color: red;
+  }
+  #spanEdge button {
+    width: 80px;
+  }
+</style>

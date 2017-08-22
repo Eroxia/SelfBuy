@@ -68,7 +68,6 @@
     name: 'Replenish',
     data () {
       return {
-        id: this.$route.params.id,
         skus: [],
         shopskus: [],
         leftskus: [],
@@ -76,7 +75,11 @@
       }
     },
     created: function () {
-      this.$http.get('http://test.cloudwarehub.com/skuStock?shopId=' + this.id)
+      //获取url 所有数字
+      var test = location.href.replace(/[^0-9]/ig,"");
+      var test1 =test.slice(4)
+
+      this.$http.get('http://test.cloudwarehub.com/sku?shopId=' + test1)
         .then(resp => {
           resp.body.data.forEach((sku) => {
             sku.size = '3'
@@ -110,7 +113,7 @@
     },
     methods: {
       //移动函数
-      move (sku,event) {
+      move(sku,event) {
         var x = event.target
         //获取当前表格的坐标
         var table = $('#table').offset()
@@ -126,7 +129,9 @@
         */
         //获取页面每个td的宽度
         var td = $('#table').width()
+
         var tdWidth = parseInt(td/19 * 3)
+        console.log(tdWidth)
         //拖动商品之后的位置 和 table的位置比对  应该push到哪一行 哪一列
         var Y = parseInt(buttonTop / 51 - 2)
        /* var X = parseInt((buttonLeft / (51 * sku.size)) - 1)
