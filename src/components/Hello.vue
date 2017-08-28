@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper" style="margin-top: 3%">
+  <div class="content-wrapper" style="padding-top: 3%">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -19,7 +19,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>150</h3>
+              <h3>{{report.orderCount}}</h3>
               <p>今日订单</p>
             </div>
 
@@ -35,7 +35,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>¥2020.50</h3>
+              <h3>{{report.totalPrice}}</h3>
 
               <p>今日销售额</p>
             </div>
@@ -50,8 +50,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>190</h3>
-
+              <h3>{{this.report.regCount}}</h3>
               <p>新增用户</p>
             </div>
             <div class="icon">
@@ -65,8 +64,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>85<sup style="font-size: 20px">%</sup></h3>
-
+              <h3>{{this.report.saleStockRate}}<sup style="font-size: 20px">%</sup></h3>
               <p>当前库存比例</p>
             </div>
             <div class="icon">
@@ -87,7 +85,7 @@
             <!-- Tabs within a box -->
             <ul class="nav nav-tabs pull-right">
               <li class="active"><a href="#revenue-chart" data-toggle="tab">销售额</a></li>
-              <li class="pull-left header"><i class="fa fa-inbox"></i> 季度趋势图</li>
+              <li class="pull-left header"><i class="fa fa-inbox"></i>销售曲线图</li>
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
@@ -101,7 +99,7 @@
             <div class="box-header with-border">
               <i class="fa fa-bar-chart-o"></i>
 
-              <h3 class="box-title">当前购买用户</h3>
+              <h3 class="box-title">热销商品排行</h3>
 
               <div class="box-tools pull-right">
                 实时
@@ -143,7 +141,7 @@
             <!-- /.box-body -->
           </div>
           <!-- LINE CHART -->
-          <div class="box box-info">
+         <!-- <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">库存比例</h3>
 
@@ -158,7 +156,7 @@
                 <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
               </div>
             </div>
-            <!-- /.box-body -->
+
           </div>
           <!-- /.box -->
 
@@ -179,7 +177,19 @@
 
 <script>
 export default {
-  name: 'Hello'
+  name: 'Hello',
+  data () {
+    return {
+      report: ''
+    }
+  },
+  created: function() {
+    this.$http.get('http://test.cloudwarehub.com/report/curOverview')
+      .then(resp => {
+        this.report = resp.body.data
+      })
+    console.log(this.report)
+  }
 
 }
 </script>

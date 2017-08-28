@@ -142,7 +142,19 @@
 </template>
 <script>
   export default {
-    name: 'Navigation'
+    name: 'Navigation',
+    data () {
+      return {
+        report: ''
+      }
+    },
+    created: function() {
+      this.$http.get('http://test.cloudwarehub.com/report/curOverview')
+        .then(resp => {
+          this.report = resp.body.data
+        })
+      console.log(this.report)
+    }
   }
 </script>
 

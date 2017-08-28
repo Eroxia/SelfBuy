@@ -270,7 +270,7 @@
     padding-top: 3%;
   }
   #container {
-    height: 900px;
+    height: 870px;
   }
   #spanEdge {
     margin-left: 20px;

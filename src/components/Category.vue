@@ -11,7 +11,7 @@
 
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" v-for="(cate,index) in pid_0">
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
               <a  data-toggle="collapse"  data-parent="#accordion"  aria-expanded="true"  aria-controls="collapseOne">{{cate.name}}</a>
               <a style="float: right" @click="capture(cate,index)"  data-toggle="modal" data-target=".bs-example-modal-sm"><span class="glyphicon glyphicon-trash"></span></a>
