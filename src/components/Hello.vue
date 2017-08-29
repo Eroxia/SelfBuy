@@ -56,7 +56,7 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">详情 <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer">详情<i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -79,17 +79,22 @@
       <!-- Main row -->
       <div class="row">
         <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
+        <section class="col-lg-12 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           <div class="nav-tabs-custom">
             <!-- Tabs within a box -->
-            <ul class="nav nav-tabs pull-right">
+            <ul class="nav nav-tabs pull-right" id="navtab">
               <li class="active"><a href="#revenue-chart" data-toggle="tab">销售额</a></li>
               <li class="pull-left header"><i class="fa fa-inbox"></i>销售曲线图</li>
             </ul>
             <div class="tab-content no-padding">
               <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
+              <schart :canvasId="cancasId1"
+                      :type="type1"
+                      :height="height"
+                      :width="width"
+                      :data="data1"
+               style="width: 100%"></schart>
             </div>
           </div>
           <!-- /.nav-tabs-custom -->
@@ -110,7 +115,13 @@
               </div>
             </div>
             <div class="box-body">
-              <div id="interactive" style="height: 300px;"></div>
+              <schart :canvasId="canvasId"
+                      :type="type"
+                      :width="width"
+                      :height="height"
+                      :data="data"
+                      :options="options"
+              ></schart>
             </div>
             <!-- /.box-body-->
           </div>
@@ -120,49 +131,7 @@
         </section>
         <!-- /.Left col -->
         <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
 
-          <!-- LINE CHART -->
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">周销售额趋势</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <canvas id="lineChart" style="height:250px"></canvas>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- LINE CHART -->
-         <!-- <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">库存比例</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <div class="chart">
-                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
-              </div>
-            </div>
-
-          </div>
-          <!-- /.box -->
-
-
-
-        </section>
         <!-- right col -->
       </div>
       <!-- /.row (main row) -->
@@ -176,11 +145,60 @@
 </template>
 
 <script>
+  import Schart from 'vue-schart';
 export default {
   name: 'Hello',
   data () {
     return {
-      report: ''
+      report: '',
+      canvasId: 'myCanvas',
+      cancasId1: 'myCanvas1',
+      type: 'bar',
+      type1: 'line',
+      height: 400,
+      width: 500,
+      data: [
+        {name: '可口可乐', value: 42},
+        {name: '农夫山泉', value: 41},
+        {name: '红烧牛肉米饭', value: 40},
+        {name: '怡宝', value: 35},
+        {name: '百岁山', value: 33},
+        {name: '绿茶', value: 20 },
+        {name: '特仑苏', value: 10},
+        {name: '甜辣鸭脖', value: 10},
+        {name: '梅菜扣肉饭', value: 8},
+
+      ],
+      data1: [
+        {name:'0：00' ,value: 20},
+        {name:'1：00' ,value: 15},
+        {name:'2：00' ,value: 5},
+        {name:'3：00' ,value: 1},
+        {name:'4：00' ,value: 0},
+        {name:'5：00' ,value: 0},
+        {name:'6：00' ,value: 11},
+        {name:'7：00' ,value: 50},
+        {name:'8：00' ,value: 70},
+        {name:'9：00' ,value: 66},
+        {name:'10：00' ,value: 30},
+        {name:'11：00' ,value: 30},
+        {name:'12：00' ,value: 50},
+        {name:'13：00' ,value: 20},
+        {name:'14：00' ,value: 30},
+        {name:'15：00' ,value: 10},
+        {name:'16：00' ,value: 10},
+        {name:'17：00' ,value: 14},
+        {name:'18：00' ,value: 12},
+        {name:'19：00' ,value: 40},
+        {name:'20：00' ,value: 60},
+        {name:'21：00' ,value: 70},
+        {name:'22：00' ,value: 77},
+        {name:'23：00' ,value: 50},
+        {name:'24：00' ,value: 55},
+      ],
+      options: {
+        title: '热销商品前10名'
+      }
     }
   },
   created: function() {
@@ -188,9 +206,12 @@ export default {
       .then(resp => {
         this.report = resp.body.data
       })
-    console.log(this.report)
-  }
-
+    setTimeout(() => {
+      var widthC = $('#navtab').width()
+      this.width = widthC
+    }, 500)
+    },
+  components:{ Schart }
 }
 </script>
 
